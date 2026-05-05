@@ -1313,7 +1313,7 @@ function startUiServer(manager) {
         });
     });
 
-    const uiPort = Number(process.env.UI_PORT || globalConfig.uiPort || 8787);
+    const uiPort = Number(process.env.PORT || process.env.UI_PORT || globalConfig.uiPort || 8787);
     app.listen(uiPort, () => {
         console.log(`UI server listening on port ${uiPort}`);
         if (getUiPassword() === 'change-me' && !process.env.UI_PASSWORD) {
