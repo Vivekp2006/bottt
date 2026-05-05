@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semiquantum Control</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-shape"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark"></div>
+      <div>
+        <h1>Semiquantum Control</h1>
+        <p>Manage bots, pairing, and configuration from one place.</p>
+      </div>
+    </div>
+    <div class="api-box">
+      <label for="apiBase">API Base URL</label>
+      <div class="api-row">
+        <input id="apiBase" type="text" placeholder="http://localhost:8787" />
+        <button id="saveApi" type="button">Save</button>
+      </div>
+      <div id="apiStatus" class="hint"></div>
+    </div>
+  </header>
+
+  <div id="authGate" class="auth-gate">
+    <form id="loginForm" class="auth-card">
+      <h2>Sign in</h2>
+      <p>Enter your UI username and password to continue.</p>
+      <input id="loginUsername" type="text" placeholder="Username" required />
+      <input id="loginPassword" type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <div id="loginMsg" class="hint"></div>
+    </form>
+  </div>
+
+  <main class="grid">
+    <section class="card" style="--i:1">
+      <div class="card-head">
+        <h2>Bots</h2>
+        <p>Start, stop, or remove sessions.</p>
+      </div>
+      <div id="botList" class="bot-list"></div>
+      <form id="addBotForm" class="form-block">
+        <h3>Add Bot</h3>
+        <label for="addPhone">Phone (for pairing code)</label>
+        <input id="addPhone" type="text" placeholder="91XXXXXXXXXX" />
+        <label class="checkbox">
+          <input id="useQr" type="checkbox" />
+          Use QR pairing
+        </label>
+        <button type="submit">Create Bot</button>
+        <div id="addBotMsg" class="hint"></div>
+      </form>
+    </section>
+
+    <section class="card" style="--i:2">
+      <div class="card-head">
+        <h2>QR</h2>
+        <p>Scan to link a bot.</p>
+      </div>
+      <label for="qrBotSelect">Bot</label>
+      <select id="qrBotSelect"></select>
+      <div class="qr-box">
+        <img id="qrImage" alt="QR will appear here" />
+      </div>
+      <div id="qrStatus" class="hint"></div>
+    </section>
+
+    <section class="card" style="--i:3">
+      <div class="card-head">
+        <h2>Config</h2>
+        <p>Update prefix and CORS settings.</p>
+      </div>
+      <form id="configForm" class="form-block">
+        <label for="prefixInput">Prefix</label>
+        <input id="prefixInput" type="text" placeholder="!" />
+        <label for="originInput">Allowed UI Origin</label>
+        <input id="originInput" type="text" placeholder="https://your-pages.pages.dev" />
+        <button type="submit">Save Config</button>
+        <div id="configMsg" class="hint"></div>
+      </form>
+
+      <form id="passwordForm" class="form-block">
+        <h3>Change UI Password</h3>
+        <label for="oldPassword">Old Password</label>
+        <input id="oldPassword" type="password" />
+        <label for="newPassword">New Password</label>
+        <input id="newPassword" type="password" />
+        <button type="submit">Update Password</button>
+        <div id="passwordMsg" class="hint"></div>
+      </form>
+    </section>
+
+    <section class="card" style="--i:4">
+      <div class="card-head">
+        <h2>Roles</h2>
+        <p>Admins and sub-admins, one entry per line.</p>
+      </div>
+      <form id="rolesForm" class="form-block">
+        <label for="adminsInput">Admins</label>
+        <textarea id="adminsInput" rows="6"></textarea>
+        <label for="subsInput">Sub-admins</label>
+        <textarea id="subsInput" rows="6"></textarea>
+        <button type="submit">Save Roles</button>
+        <div id="rolesMsg" class="hint"></div>
+      </form>
+    </section>
+
+    <section class="card" style="--i:5">
+      <div class="card-head">
+        <h2>Send</h2>
+        <p>Manual message dispatch.</p>
+      </div>
+      <form id="sendForm" class="form-block">
+        <label for="sendBotSelect">Bot</label>
+        <select id="sendBotSelect"></select>
+        <label for="sendJid">Target JID or number</label>
+        <input id="sendJid" type="text" placeholder="1234567890 or 12345@g.us" />
+        <label for="sendText">Message</label>
+        <textarea id="sendText" rows="4"></textarea>
+        <button type="submit">Send Message</button>
+        <div id="sendMsg" class="hint"></div>
+      </form>
+    </section>
+
+    <section class="card logs" style="--i:6">
+      <div class="card-head">
+        <h2>Logs</h2>
+        <p>Live output from the bot runtime.</p>
+      </div>
+      <div id="logStream" class="log-stream"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
