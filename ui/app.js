@@ -1,6 +1,8 @@
+const defaultApiBase = 'http://localhost:8787';
+
 const state = {
   token: localStorage.getItem('uiToken') || '',
-  apiBase: localStorage.getItem('apiBase') || 'http://localhost:8787',
+  apiBase: localStorage.getItem('apiBase') || defaultApiBase,
   logSource: null,
   qrTimer: null
 };
@@ -56,6 +58,18 @@ function setToken(token) {
 function setApiBase(value) {
   state.apiBase = value;
   localStorage.setItem('apiBase', value);
+}
+
+async function loadUiConfig() {
+  try {
+    const res = await fetch('./config.json', { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const saved = localStorage.getItem('apiBase');
+    if (!saved && data && data.apiBase) {
+      setApiBase(String(data.apiBase));
+    }
+  } catch (err) {}
 }
 
 function apiUrl(path) {
@@ -280,8 +294,6 @@ async function refreshAll() {
   startQrPoll();
 }
 
-el.apiBase.value = state.apiBase;
-
 el.saveApi.addEventListener('click', () => {
   const value = el.apiBase.value.trim();
   if (!value) return;
@@ -369,9 +381,15 @@ el.sendForm.addEventListener('submit', async (event) => {
   }
 });
 
-showAuthGate(!state.token);
-if (state.token) {
-  refreshAll().catch(() => {
-    showAuthGate(true);
-  });
+async function init() {
+  await loadUiConfig();
+  el.apiBase.value = state.apiBase;
+  showAuthGate(!state.token);
+  if (state.token) {
+    refreshAll().catch(() => {
+      showAuthGate(true);
+    });
+  }
 }
+
+init();
