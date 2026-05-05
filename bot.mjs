@@ -1159,18 +1159,11 @@ function startUiServer(manager) {
 
     app.use(express.static(uiDir));
     app.use(express.json({ limit: '1mb' }));
-    app.use(cors({
-        origin: (origin, cb) => {
-            const allowed = resolveAllowedOrigins();
-            const allowAll = allowed.includes('*');
-            if (!origin || allowAll || allowed.includes(origin) || origin === 'https://wpsqbot.sqstudio.in') {
-                return cb(null, true);
-            }
-            return cb(null, false);
-        },
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization']
-    }));
+    app.use((req, res, next) => {
+        console.log(`[UI-API] ${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+        next();
+    });
+    app.use(cors());
 
     app.post('/api/login', (req, res) => {
         const username = String(req.body?.username || '');
