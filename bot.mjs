@@ -1163,9 +1163,13 @@ function startUiServer(manager) {
         origin: (origin, cb) => {
             const allowed = resolveAllowedOrigins();
             const allowAll = allowed.includes('*');
-            if (!origin || allowAll || allowed.includes(origin)) return cb(null, true);
-            return cb(new Error('not_allowed'), false);
-        }
+            if (!origin || allowAll || allowed.includes(origin) || origin === 'https://wpsqbot.sqstudio.in') {
+                return cb(null, true);
+            }
+            return cb(null, false);
+        },
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization']
     }));
 
     app.post('/api/login', (req, res) => {
