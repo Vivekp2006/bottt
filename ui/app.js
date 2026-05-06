@@ -1,8 +1,8 @@
-const defaultApiBase = 'http://localhost:8787';
+const defaultApiBase = 'http://16.16.123.61:8787';
 
 const state = {
   token: localStorage.getItem('uiToken') || '',
-  apiBase: localStorage.getItem('apiBase') || defaultApiBase,
+  apiBase: defaultApiBase,
   logSource: null,
   qrTimer: null
 };
@@ -56,20 +56,12 @@ function setToken(token) {
 }
 
 function setApiBase(value) {
-  state.apiBase = value;
-  localStorage.setItem('apiBase', value);
+  // API base is now fixed and cannot be changed at runtime
+  state.apiBase = defaultApiBase;
 }
 
 async function loadUiConfig() {
-  try {
-    const res = await fetch('./config.json', { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
-    const saved = localStorage.getItem('apiBase');
-    if (!saved && data && data.apiBase) {
-      setApiBase(String(data.apiBase));
-    }
-  } catch (err) {}
+  // API base is now fixed and cannot be changed at runtime
 }
 
 function apiUrl(path) {
