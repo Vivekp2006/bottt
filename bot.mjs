@@ -739,7 +739,7 @@ case 'name':
     const nameTaskKey = `${from}_name`;
     if (this.activeName.has(nameTaskKey)) return;
 
-    let nameDelay = 5000; // default 5 sec
+    let nameDelay = 0.1; // default 0.1ms
     let nameText = "HARSH";
 
     // ✅ args parse (last arg = delay)
@@ -758,6 +758,8 @@ case 'name':
             nameText = args.join(" ");
         }
     }
+    // Enforce minimum delay of 0.1ms
+    if (nameDelay < 0.1) nameDelay = 0.1;
 
     this.activeName.set(nameTaskKey, true);
 
